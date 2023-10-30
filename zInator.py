@@ -113,10 +113,13 @@ if __name__ == '__main__':
         tmpfilename = '{}.tmp{}'.format(*os.path.splitext(infilename))
         with open(tmpfilename, 'w') as tmpfile:
             rewrite(infile, tmpfile, args.verbose)
+        infile.close()
         if args.overwrite:
             outfilename = infilename
         else:
             outfilename = '{}{}'.format(*os.path.splitext(infilename))
+        if infilename == outfilename:
+            os.unlink(infilename)
         os.rename(tmpfilename, outfilename)
         print("{}\n  => {}".format(infilename, outfilename))
-        infile.close()
+        
